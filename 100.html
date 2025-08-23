@@ -28,6 +28,7 @@
             border-radius: 8px;
             box-shadow: 0 0 15px #00ff00;
             width: 300px;
+            margin-bottom: 20px;
         }
         .login-box input {
             width: 100%;
@@ -51,6 +52,29 @@
             cursor: pointer;
         }
         .login-box button:hover { background-color: #00cc00; }
+
+        /* زر الصفحة الثالثة */
+        .extra-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background-color: rgba(0, 255, 0, 0.1);
+            border: 1px solid #00ff00;
+            color: #00ff00;
+            padding: 10px 20px;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 0 10px #00ff00;
+            border-radius: 6px;
+        }
+        .extra-btn:hover {
+            background-color: rgba(0, 255, 0, 0.2);
+        }
+        .extra-btn img {
+            width: 20px;
+            height: 20px;
+        }
     </style>
 </head>
 <body>
@@ -69,12 +93,17 @@
         </form>
     </div>
 
+    <!-- زر الصفحة الثالثة -->
+    <a href="page3.html" class="extra-btn">
+        <img src="icon.png" alt="أيقونة">
+        <span>الصفحة الثالثة</span>
+    </a>
+
     <script>
         function goToGamesPage(event) {
             event.preventDefault();
             const username = document.getElementById('username').value;
             const accessCode = document.getElementById('accessCode').value;
-            // تمرير البيانات عبر رابط URL
             window.location.href = `games.html?username=${encodeURIComponent(username)}&code=${encodeURIComponent(accessCode)}`;
         }
     </script>
