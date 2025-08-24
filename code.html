@@ -1,102 +1,68 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>الصفحة الثالثة</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
-
-        body {
-            background-color: #000;
-            color: #00ff00;
-            font-family: 'Share Tech Mono', monospace;
-            margin: 0;
-            padding: 0;
-            text-align: center;
-        }
-        header {
-            padding: 20px;
-            border-bottom: 1px solid #00ff00;
-        }
-        header img {
-            max-width: 120px;
-        }
-        main {
-            padding: 40px 20px;
-        }
-        .text-box {
-            background-color: rgba(0, 255, 0, 0.05);
-            border: 1px solid #00ff00;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 15px #00ff00;
-            display: inline-block;
-            max-width: 600px;
-            margin-bottom: 30px;
-        }
-        /* مربع إدخال الكود */
-        .code-input {
-            width: 200px;
-            padding: 10px;
-            background-color: #000;
-            border: 1px solid #00ff00;
-            color: #00ff00;
-            font-size: 18px;
-            text-align: center;
-            letter-spacing: 4px;
-        }
-        .code-input:focus {
-            outline: none;
-            box-shadow: 0 0 10px #00ff00;
-        }
-        /* زر الإنتر */
-        .enter-btn {
-            margin-top: 15px;
-            padding: 10px 20px;
-            background-color: #00ff00;
-            color: #000;
-            font-weight: bold;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        .enter-btn:hover {
-            background-color: #00cc00;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>الصفحة الثالثة</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-color: #000;
+      color: #00ff00;
+      font-family: 'Share Tech Mono', monospace;
+      text-align: center;
+      padding: 40px 20px;
+    }
+    header img { max-width: 120px; margin-bottom: 20px; }
+    .text-box {
+      background-color: rgba(0, 255, 0, 0.05);
+      border: 1px solid #00ff00;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 15px #00ff00;
+      max-width: 600px;
+      margin: auto auto 30px;
+    }
+    .code-input {
+      width: 200px;
+      padding: 10px;
+      background-color: #000;
+      border: 1px solid #00ff00;
+      color: #00ff00;
+      font-size: 18px;
+      text-align: center;
+      letter-spacing: 4px;
+    }
+    .enter-btn {
+      margin-top: 15px;
+      padding: 10px 20px;
+      background-color: #00ff00;
+      color: #000;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .enter-btn:hover { background-color: #00cc00; }
+  </style>
 </head>
 <body>
 
-    <header>
-        <img src="logo.png" alt="شعار الموقع">
-    </header>
+  <header>
+    <img src="logo.png" alt="شعار الموقع">
+  </header>
 
-    <main>
-        <div class="text-box">
-            <p>هنا سيكون النص الذي سنعدله لاحقًا...</p>
-        </div>
+  <main>
+    <div class="text-box">
+      <p>أدخل الكود السري للانتقال إلى الصفحة التالية</p>
+    </div>
 
-        <!-- إدخال الكود -->
-        <input type="text" id="codeInput" class="code-input" maxlength="6" placeholder="أدخل الكود">
-        <br>
-        <button class="enter-btn" onclick="checkCode()">إنتر</button>
-    </main>
+    <input type="text" id="codeInput" class="code-input" maxlength="6" placeholder="أدخل الكود">
+    <br>
+    <button class="enter-btn" onclick="checkCode()">إنتر</button>
+  </main>
 
-    <script>
-        function checkCode() {
-            const allowedCodes = ["666001", "666002", "666003"];
-            const enteredCode = document.getElementById("codeInput").value.trim();
-
-            if (allowedCodes.includes(enteredCode)) {
-                // الانتقال إلى الصفحة الرابعة
-                window.location.href = "page4.html";
-            } else {
-                // الكود غير صحيح - لا يحدث شيء
-                alert("⚠️ الكود غير صحيح");
-            }
-        }
-    </script>
+  <script src="codes.js"></script>
 
 </body>
 </html>
