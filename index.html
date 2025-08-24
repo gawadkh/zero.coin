@@ -50,7 +50,7 @@
   </div>
 
   <div class="login-box">
-    <form onsubmit="goToGamesPage(event)">
+    <form onsubmit="checkLogin(event)">
       <input type="text" id="username" placeholder="اسم المستخدم" required>
       <input type="password" id="accessCode" placeholder="كود الدخول" required>
       <button type="submit">دخول</button>
@@ -58,11 +58,17 @@
   </div>
 
   <script>
-    function goToGamesPage(event) {
+    function checkLogin(event) {
       event.preventDefault();
-      const username = document.getElementById('username').value;
-      const accessCode = document.getElementById('accessCode').value;
-      window.location.href = `games.html?username=${encodeURIComponent(username)}&code=${encodeURIComponent(accessCode)}`;
+      const username = document.getElementById('username').value.trim();
+      const accessCode = document.getElementById('accessCode').value.trim();
+
+      // التحقق من اسم المستخدم وكلمة المرور
+      if (username === "admin" && accessCode === "admin") {
+        window.location.href = `code.html?username=${encodeURIComponent(username)}`;
+      } else {
+        alert("اسم المستخدم أو كلمة المرور غير صحيحة");
+      }
     }
   </script>
 
