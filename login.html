@@ -1,113 +1,70 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تسجيل الدخول</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
-
-        body {
-            background-color: #000;
-            color: #00ff00;
-            font-family: 'Share Tech Mono', monospace;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .logo { margin-bottom: 30px; }
-        .logo img { max-width: 150px; }
-        h1 { margin-bottom: 20px; text-shadow: 0 0 10px #00ff00; }
-        .login-box {
-            background-color: rgba(0, 255, 0, 0.05);
-            padding: 20px;
-            border: 1px solid #00ff00;
-            border-radius: 8px;
-            box-shadow: 0 0 15px #00ff00;
-            width: 300px;
-            margin-bottom: 20px;
-        }
-        .login-box input {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            background-color: #000;
-            border: 1px solid #00ff00;
-            color: #00ff00;
-        }
-        .login-box input:focus {
-            outline: none;
-            box-shadow: 0 0 10px #00ff00;
-        }
-        .login-box button {
-            width: 100%;
-            padding: 10px;
-            background-color: #00ff00;
-            color: #000;
-            font-weight: bold;
-            border: none;
-            cursor: pointer;
-        }
-        .login-box button:hover { background-color: #00cc00; }
-
-        /* زر الصفحة الثالثة */
-        .extra-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            background-color: rgba(0, 255, 0, 0.1);
-            border: 1px solid #00ff00;
-            color: #00ff00;
-            padding: 10px 20px;
-            text-decoration: none;
-            font-weight: bold;
-            box-shadow: 0 0 10px #00ff00;
-            border-radius: 6px;
-        }
-        .extra-btn:hover {
-            background-color: rgba(0, 255, 0, 0.2);
-        }
-        .extra-btn img {
-            width: 20px;
-            height: 20px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تسجيل الدخول</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-color: #000;
+      color: #00ff00;
+      font-family: 'Share Tech Mono', monospace;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .logo img { max-width: 150px; margin-bottom: 30px; }
+    .login-box {
+      background-color: rgba(0, 255, 0, 0.05);
+      padding: 20px;
+      border: 1px solid #00ff00;
+      border-radius: 8px;
+      box-shadow: 0 0 15px #00ff00;
+      width: 300px;
+    }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      background-color: #000;
+      border: 1px solid #00ff00;
+      color: #00ff00;
+    }
+    button {
+      background-color: #00ff00;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:hover { background-color: #00cc00; }
+  </style>
 </head>
 <body>
 
-    <div class="logo">
-        <img src="logo.png" alt="شعار الموقع">
-    </div>
+  <div class="logo">
+    <img src="logo.png" alt="شعار الموقع">
+  </div>
 
-    <h1>تسجيل الدخول</h1>
+  <div class="login-box">
+    <form onsubmit="goToGamesPage(event)">
+      <input type="text" id="username" placeholder="اسم المستخدم" required>
+      <input type="password" id="accessCode" placeholder="كود الدخول" required>
+      <button type="submit">دخول</button>
+    </form>
+  </div>
 
-    <div class="login-box">
-        <form onsubmit="goToGamesPage(event)">
-            <input type="text" id="username" placeholder="اسم المستخدم" required>
-            <input type="password" id="accessCode" placeholder="كود الدخول" required>
-            <button type="submit">دخول</button>
-        </form>
-    </div>
-
-    <!-- زر الصفحة الثالثة -->
-    <a href="code.html" class="extra-btn">
-        <img src="icon.png" alt="أيقونة">
-        <span>الصفحة الثالثة</span>
-    </a>
-
-    <script>
-        function goToGamesPage(event) {
-            event.preventDefault();
-            const username = document.getElementById('username').value;
-            const accessCode = document.getElementById('accessCode').value;
-            window.location.href = `games.html?username=${encodeURIComponent(username)}&code=${encodeURIComponent(accessCode)}`;
-        }
-    </script>
+  <script>
+    function goToGamesPage(event) {
+      event.preventDefault();
+      const username = document.getElementById('username').value;
+      const accessCode = document.getElementById('accessCode').value;
+      window.location.href = `games.html?username=${encodeURIComponent(username)}&code=${encodeURIComponent(accessCode)}`;
+    }
+  </script>
 
 </body>
 </html>
-
