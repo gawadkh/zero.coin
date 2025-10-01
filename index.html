@@ -376,3 +376,20 @@
   </script>
 </body>
 </html>
+// داخل index.html
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  const data = {
+    username: username.value.trim(),
+    remember: !!remember.checked,
+    xp: 0, // مبدئيًا صفر، ويمكنك زيادته لاحقًا
+    timestamp: Date.now()
+  };
+
+  localStorage.setItem("demo_auth_v1", JSON.stringify(data));
+
+  // التوجيه إلى الصفحة الرئيسية
+  window.location.href = "main.html";
+});
+
