@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>الواجهة الرئيسية</title>
+  <style>
+    :root{
+      --bg: #000;
+      --matrix-green: #00ff7b;
+      --matrix-dim: #0a3;
+      --text: #d8ffd8;
+    }
+    *{box-sizing:border-box;}
+    html,body{height:100%;margin:0;background:var(--bg);color:var(--text);font-family:"Cairo","Amiri",monospace;overflow:hidden;}
+    .matrix-canvas{position:fixed;inset:0;z-index:0;}
+    .page{position:relative;z-index:1;display:grid;grid-template-rows:auto 1fr auto;min-height:100vh;padding:12px;gap:12px;}
+    header{display:flex;align-items:center;justify-content:space-between;padding:8px;}
+    .logo{border:1px dashed var(--matrix-dim);padding:6px 12px;color:var(--matrix-green);text-shadow:0 0 6px var(--matrix-green);}
+    .user-info{flex:1;text-align:center;color:var(--matrix-green);font-weight:bold;text-shadow:0 0 6px var(--matrix-green);}
+    .xp{color:#9fffbf;font-size:14px;text-shadow:0 0 6px var(--matrix-green);}
+    .center{display:grid;place-items:center;}
+    .terminal{width:min(92vw,800px);height:50vh;background:rgba(0,0,0,0.6);border:1px solid var(--matrix-dim);border-radius:8px;box-shadow:0 0 16px rgba(0,255,123,0.3);padding:12px;overflow-y:auto;white-space:pre-wrap;font-family:monospace;font-size:14px;color:var(--matrix-green);}
+    .input-area{margin-top:12px;display:flex;gap:8px;justify-content:center;}
+    .cmd-input{flex:1;max-width:600px;padding:10px;background:rgba(0,0,0,0.7);border:1px solid var(--matrix-dim);border-radius:6px;color:var(--text);}
+    .btn{padding:10px 16px;background:var(--matrix-green);border:none;border-radius:6px;color:#000;font-weight:bold;cursor:pointer;}
+  </style>
+</head>
+<body>
+  <canvas class="matrix-canvas" id="matrix"></canvas>
+  <main class="page">
+    <header>
+      <div class="logo">الشعار</div>
+      <div class="user-info" id="userInfo">مستخدم</div>
+      <div class="xp" id="xpLevel">XP: 0</div>
+    </header>
+    <section class="center">
+      <div class="terminal" id="terminal"></div>
+      <div class="input-area">
+        <input type="text" id="command" class="cmd-input" placeholder="أدخل الأمر هنا..." />
+        <button class="btn" id="sendBtn">إدخال</button>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    /* خلفية ماتركس */
+    (function(){
+      const canvas=document.getElementById('matrix');
+      const ctx=canvas.getContext('2d');
+      function resize(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;}
+      resize();window.addEventListener('resize',resize);
+      const glyphs="آأبتثجحخدذرزسشصضطظعغفقكلمنهوىي؟؛،ـ";
+      const fontSize=16;const columns=Math.ceil(canvas.width/fontSize);
+      const drops=Array.from({length:columns},()=>Math.random()*canvas.height);
+      function draw(){
+        ctx.fillStyle="rgba(0,0,0,0.08)";ctx.fillRect(0,0,canvas.width,canvas.height);
+        ctx.fillStyle="#0f0";ctx.font=fontSize+"px monospace";
+        for(let i=0;i<drops.length;i++){
+          const text=glyphs.charAt(Math.floor(Math.random()*glyphs.length));
+          ctx.fillText(text,i*fontSize,drops[i]*fontSize);
+          if(drops[i]*fontSize>canvas.height&&Math.random()>0.975){drops[i]=0;}
+          drops[i]++;
+        }
+        requestAnimationFrame(draw);
+      }
+      draw();
+    })();
+
+    /* تحميل اسم المستخدم من التخزين المحلي */
+    const saved=JSON.parse(localStorage.getItem("demo_auth_v1")||"null");
+    if(saved && saved.username){
+      document.getElementById("userInfo").textContent=saved.username;
+      document.getElementById("xpLevel").textContent="XP: "+(saved.xp||0);
+    }
+
+    /* محاكاة أوامر */
+    const terminal=document.getElementById("terminal");
+    const input=document.getElementById("command");
+    const sendBtn=document.getElementById("sendBtn");
+
+    const commands={
+      help:"الأوامر المتاحة: help, about, hack, clear",
+      about:"نظام محاكاة هاك عربي - نسخة تجريبية",
+      hack:"جارٍ الاختراق...\nتم الوصول إلى النظام بنجاح ✔",
+      clear:"__CLEAR__"
+    };
+
+    function print(text){
+      terminal.textContent+=text+"\n";
+      terminal.scrollTop=terminal.scrollHeight;
+    }
+
+    function runCommand(cmd){
+      const c=cmd.trim().toLowerCase();
+      if(commands[c]){
+        if(commands[c]==="__CLEAR__"){terminal.textContent="";return;}
+        print("> "+cmd);
+        setTimeout(()=>print(commands[c]),300);
+      } else {
+        print("> "+cmd);
+        setTimeout(()=>print("خطأ: الأمر غير معروف"),300);
+      }
+    }
+
+    sendBtn.addEventListener("click",()=>{
+      if(input.value.trim()!==""){runCommand(input.value);input.value="";}
+    });
+    input.addEventListener("keydown",(e)=>{
+      if(e.key==="Enter"){sendBtn.click();}
+    });
+  </script>
+</body>
+</html>
