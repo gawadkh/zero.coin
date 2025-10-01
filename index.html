@@ -3,59 +3,191 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>تسجيل الدخول</title>
+  <title>بوابة الدخول</title>
   <style>
-    body{margin:0;background:#000;color:#0f0;font-family:"Cairo",monospace;overflow:hidden;}
-    .matrix-canvas{position:fixed;inset:0;z-index:0;}
-    .page{position:relative;z-index:1;display:grid;place-items:center;height:100vh;}
-    .login-card{background:rgba(0,0,0,0.6);border:1px solid #0a3;padding:20px;border-radius:10px;box-shadow:0 0 20px rgba(0,255,123,0.3);width:min(90vw,400px);}
-    .login-card h2{color:#0f0;text-align:center;}
-    .input{width:100%;padding:10px;margin:8px 0;background:#000;border:1px solid #0a3;color:#0f0;border-radius:6px;}
-    .btn{width:100%;padding:10px;background:#0f0;color:#000;font-weight:bold;border:none;border-radius:6px;cursor:pointer;}
+    :root{
+      --bg: #000000;
+      --matrix-green: #00ff7b;
+      --matrix-dim: #0a3;
+      --text: #d8ffd8;
+      --accent: #00c26a;
+      --input-bg: rgba(0,0,0,0.6);
+      --input-border: rgba(0,255,123,0.35);
+      --card-bg: rgba(0, 10, 0, 0.55);
+      --shadow: 0 0 32px rgba(0,255,123,0.25), inset 0 0 12px rgba(0,255,123,0.2);
+    }
+    *{box-sizing:border-box;}
+    html,body{height:100%;}
+    body{
+      margin:0;background:var(--bg);color:var(--text);
+      font-family:"Cairo","Amiri","Tajawal",system-ui,sans-serif;
+      overflow:hidden;
+    }
+    .matrix-canvas{position:fixed;inset:0;z-index:0;background:#000;}
+
+    .page{
+      position:relative;z-index:1;
+      display:grid;grid-template-rows:auto 1fr auto;
+      min-height:100vh;padding:16px;gap:16px;
+    }
+
+    /* الشعار مؤقتاً وسط الأعلى هنا (سنضعه يمين في الصفحة الرئيسية) */
+    .header{display:flex;align-items:center;justify-content:center;padding:8px 12px;}
+    .logo{
+      width:clamp(120px,30vw,220px);height:clamp(40px,10vw,72px);
+      border:1.5px dashed var(--matrix-dim);border-radius:10px;
+      color:var(--matrix-green);display:grid;place-items:center;
+      text-shadow:0 0 8px var(--matrix-green);user-select:none;
+    }
+
+    .center{display:grid;place-items:center;padding:8px;}
+
+    .login-card{
+      width:min(92vw,460px);
+      background:var(--card-bg);border:1px solid var(--matrix-dim);
+      border-radius:14px;box-shadow:var(--shadow);backdrop-filter:blur(6px);
+      padding:18px 16px;display:grid;gap:14px;
+    }
+    .login-title{
+      margin:0;font-size:clamp(18px,4vw,22px);
+      color:var(--matrix-green);letter-spacing:0.8px;
+      text-shadow:0 0 8px rgba(0,255,123,0.6);
+      display:flex;align-items:center;gap:8px;
+    }
+    .form{display:grid;gap:12px;}
+    .field{display:grid;gap:6px;}
+    .label{font-size:14px;color:#9fffbf;letter-spacing:0.4px;}
+    .input{
+      width:100%;padding:12px 14px;border-radius:10px;background:var(--input-bg);
+      border:1.5px solid var(--input-border);color:var(--text);outline:none;
+      caret-color:var(--matrix-green);
+      box-shadow:inset 0 0 10px rgba(0,255,123,0.12);
+      transition:border-color .2s, box-shadow .2s;font-family:inherit;
+    }
+    .input:focus{border-color:var(--matrix-green);box-shadow:inset 0 0 14px rgba(0,255,123,0.18);}
+    .actions{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:4px;}
+    .remember{display:inline-flex;align-items:center;gap:8px;color:#9fffbf;font-size:14px;user-select:none;}
+    .remember input{accent-color:var(--accent);}
+    .btn{
+      padding:10px 16px;border-radius:10px;border:1.5px solid var(--matrix-green);
+      color:var(--bg);background:var(--matrix-green);font-weight:600;letter-spacing:.4px;
+      cursor:pointer;transition:transform .08s ease, box-shadow .15s ease;
+      box-shadow:0 0 12px rgba(0,255,123,0.35);
+    }
+    .btn:hover{transform:translateY(-1px);}
+    .btn:active{transform:translateY(0);}
+    .hint{font-size:12.5px;color:#88ffb2;line-height:1.5;}
+
+    .footer{padding:8px;}
+    .message-card{
+      width:min(94vw,820px);margin:0 auto;
+      background:linear-gradient(180deg, rgba(0,10,0,0.45), rgba(0,20,0,0.55));
+      border:1px solid var(--matrix-dim);border-radius:12px;box-shadow:var(--shadow);padding:14px 16px;
+    }
+    .matrix-arabic{
+      font-family:"Amiri","Cairo",monospace;font-size:clamp(14px,2.8vw,18px);
+      letter-spacing:1px;line-height:1.8;color:var(--matrix-green);
+      text-shadow:0 0 6px rgba(0,255,123,0.55), 0 0 18px rgba(0,255,123,0.25);
+      direction:rtl;white-space:pre-wrap;user-select:none;
+    }
+
+    @media (min-width:768px){
+      .login-card{padding:22px 18px;gap:16px;}
+      .actions .btn{padding:12px 18px;}
+    }
   </style>
 </head>
 <body>
   <canvas class="matrix-canvas" id="matrix"></canvas>
-  <div class="page">
-    <form class="login-card" id="loginForm">
-      <h2>تسجيل الدخول</h2>
-      <input class="input" id="username" placeholder="اسم المستخدم" required />
-      <input class="input" id="password" type="password" placeholder="كلمة المرور" required />
-      <button class="btn" type="submit">دخول</button>
-    </form>
-  </div>
+
+  <main class="page" aria-label="بوابة الدخول">
+    <header class="header">
+      <div class="logo" aria-label="مساحة الشعار">الشعار هنا</div>
+    </header>
+
+    <section class="center">
+      <form class="login-card" id="loginForm" autocomplete="on">
+        <h2 class="login-title">تسجيل الدخول</h2>
+        <div class="form">
+          <div class="field">
+            <label class="label" for="username">اسم المستخدم</label>
+            <input class="input" id="username" name="username" type="text" placeholder="اكتب اسم المستخدم" required />
+          </div>
+          <div class="field">
+            <label class="label" for="password">كلمة المرور</label>
+            <input class="input" id="password" name="password" type="password" placeholder="••••••••" required />
+          </div>
+        </div>
+
+        <div class="actions">
+          <label class="remember">
+            <input type="checkbox" id="remember" checked />
+            تذكرني تلقائياً
+          </label>
+          <button class="btn" type="submit">دخول</button>
+        </div>
+
+        <p class="hint">سيتم نقلك مباشرةً للواجهة الرئيسية بعد الدخول.</p>
+      </form>
+    </section>
+
+    <footer class="footer">
+      <div class="message-card">
+        <div class="matrix-arabic" id="userMessage">‎رسالتنا إليك ستظهر هنا بأسلوب عربي ماتركسي…‎</div>
+      </div>
+    </footer>
+  </main>
 
   <script>
-    // خلفية ماتركس
+    /* خلفية الماتركس */
     (function(){
-      const canvas=document.getElementById('matrix'),ctx=canvas.getContext('2d');
-      function resize(){canvas.width=innerWidth;canvas.height=innerHeight;}
-      resize();onresize=resize;
-      const glyphs="آأبتثجحخدذرزسشصضطظعغفقكلمنهوىي؟؛،ـ";
-      const fontSize=16,columns=Math.ceil(canvas.width/fontSize);
-      const drops=Array.from({length:columns},()=>Math.random()*canvas.height);
+      const canvas=document.getElementById('matrix');
+      const ctx=canvas.getContext('2d');
+      function resize(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;}
+      resize();window.addEventListener('resize',resize);
+      const glyphs="آأبتثجحخدذرزسشصضطظعغفقكلمنهوىي؟؛،ـ﴾﴿⟂";
+      const fontSize=Math.max(14,Math.floor(window.innerWidth/80));
+      let columns, drops;
+      function init(){
+        columns=Math.ceil(canvas.width/fontSize);
+        drops=Array.from({length:columns},()=>Math.floor(Math.random()*canvas.height));
+      }
+      init(); window.addEventListener('resize',init);
       function draw(){
-        ctx.fillStyle="rgba(0,0,0,0.08)";ctx.fillRect(0,0,canvas.width,canvas.height);
-        ctx.fillStyle="#0f0";ctx.font=fontSize+"px monospace";
+        ctx.fillStyle="rgba(0, 0, 0, 0.08)";
+        ctx.fillRect(0,0,canvas.width,canvas.height);
+        ctx.fillStyle="#00ff7b";
+        ctx.shadowColor="#00ff7b"; ctx.shadowBlur=8;
+        ctx.font=`${fontSize}px "Amiri","Cairo",monospace`;
         for(let i=0;i<drops.length;i++){
           const text=glyphs.charAt(Math.floor(Math.random()*glyphs.length));
-          ctx.fillText(text,i*fontSize,drops[i]*fontSize);
-          if(drops[i]*fontSize>canvas.height&&Math.random()>0.975){drops[i]=0;}
-          drops[i]++;
+          const x=i*fontSize, y=drops[i]*fontSize;
+          ctx.fillText(text,x,y);
+          if(y>canvas.height && Math.random()>0.975){drops[i]=0;} else {drops[i]++;}
         }
         requestAnimationFrame(draw);
       }
       draw();
     })();
 
-    // تسجيل الدخول
-    document.getElementById("loginForm").addEventListener("submit",e=>{
+    /* تسجيل الدخول والربط */
+    document.getElementById('loginForm').addEventListener('submit', (e)=>{
       e.preventDefault();
-      const username=document.getElementById("username").value.trim();
-      const data={username:username,xp:0};
-      localStorage.setItem("demo_auth_v1",JSON.stringify(data));
-      window.location.href="main.html"; // الانتقال للصفحة الرئيسية
+      const username=document.getElementById('username').value.trim();
+      const remember=document.getElementById('remember').checked;
+
+      const data={username, xp:0, remember, timestamp:Date.now()};
+      localStorage.setItem("demo_auth_v1", JSON.stringify(data));
+
+      // انتقال للواجهة الرئيسية
+      window.location.href="main.html";
     });
+
+    // دالة لتعديل الرسالة لاحقاً
+    function setUserMessage(text){
+      const msg=document.getElementById('userMessage');
+      if(msg){ msg.textContent=text; }
+    }
   </script>
 </body>
 </html>
