@@ -3,115 +3,17 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>الواجهة الرئيسية</title>
-  <style>
-    :root{
-      --bg: #000000;
-      --matrix-green: #00ff7b;
-      --matrix-dim: #0a3;
-      --text: #d8ffd8;
-      --card-bg: rgba(0, 10, 0, 0.55);
-      --shadow: 0 0 32px rgba(0,255,123,0.25), inset 0 0 12px rgba(0,255,123,0.2);
-    }
-    *{box-sizing:border-box;}
-    html,body{height:100%;}
-    body{
-      margin:0;background:var(--bg);color:var(--text);
-      font-family:"Cairo","Amiri","Tajawal",system-ui,sans-serif;
-      overflow:hidden;
-    }
-    .matrix-canvas{position:fixed;inset:0;z-index:0;background:#000;}
-
-    .page{
-      position:relative;z-index:1;
-      display:grid;grid-template-rows:auto 1fr auto;
-      min-height:100vh;padding:16px;gap:16px;
-    }
-
-    /* الهيدر: يمين الشعار، وسط الاسم، يسار XP */
-    .header{
-      display:grid;grid-template-columns:1fr 1fr 1fr;
-      align-items:center;padding:8px 12px;
-    }
-    .header-right{display:flex;justify-content:flex-end;}
-    .header-center{display:flex;justify-content:center;}
-    .header-left{display:flex;justify-content:flex-start;}
-
-    .logo{
-      width:clamp(120px,30vw,220px);
-      height:clamp(40px,10vw,72px);
-      border:1.5px dashed var(--matrix-dim);border-radius:10px;
-      color:var(--matrix-green);display:grid;place-items:center;
-      text-shadow:0 0 8px var(--matrix-green);user-select:none;
-    }
-    .user-info{
-      color:var(--matrix-green);font-weight:700;letter-spacing:.6px;
-      text-shadow:0 0 8px rgba(0,255,123,0.6);
-      font-size:clamp(16px,3.2vw,20px);
-    }
-    .xp{
-      color:#9fffbf;font-weight:600;
-      text-shadow:0 0 6px rgba(0,255,123,0.5);
-      font-size:clamp(14px,2.8vw,18px);
-    }
-
-    .center{display:grid;place-items:center;padding:8px;gap:12px;}
-
-    /* شاشة الأوامر */
-    .terminal{
-      width:min(94vw,900px);height:52vh;
-      background:var(--card-bg);backdrop-filter:blur(6px);
-      border:1px solid var(--matrix-dim);border-radius:14px;
-      box-shadow:var(--shadow);padding:14px 16px;
-      overflow-y:auto;white-space:pre-wrap;
-      font-family:monospace;font-size:14px;color:var(--matrix-green);
-      text-shadow:0 0 6px rgba(0,255,123,0.35);
-    }
-    .input-area{
-      display:flex;gap:10px;justify-content:center;align-items:center;
-      width:100%;
-    }
-    .cmd-input{
-      flex:1;max-width:min(82vw,640px);
-      padding:12px 14px;border-radius:10px;
-      background:rgba(0,0,0,0.6);border:1.5px solid rgba(0,255,123,0.35);
-      color:var(--text);outline:none;
-      box-shadow:inset 0 0 10px rgba(0,255,123,0.12);
-    }
-    .btn{
-      padding:12px 18px;border-radius:10px;border:1.5px solid var(--matrix-green);
-      color:var(--bg);background:var(--matrix-green);font-weight:700;letter-spacing:.4px;
-      cursor:pointer;transition:transform .08s ease, box-shadow .15s ease;
-      box-shadow:0 0 12px rgba(0,255,123,0.35);
-    }
-    .btn:hover{transform:translateY(-1px);}
-    .btn:active{transform:translateY(0);}
-
-    .footer{padding:8px;}
-    .message-card{
-      width:min(94vw,820px);margin:0 auto;
-      background:linear-gradient(180deg, rgba(0,10,0,0.45), rgba(0,20,0,0.55));
-      border:1px solid var(--matrix-dim);border-radius:12px;box-shadow:var(--shadow);padding:14px 16px;
-    }
-    .matrix-arabic{
-      font-family:"Amiri","Cairo",monospace;font-size:clamp(14px,2.8vw,18px);
-      letter-spacing:1px;line-height:1.8;color:var(--matrix-green);
-      text-shadow:0 0 6px rgba(0,255,123,0.55), 0 0 18px rgba(0,255,123,0.25);
-      direction:rtl;white-space:pre-wrap;user-select:none;
-    }
-
-    @media (min-width:768px){
-      .btn{padding:12px 20px;}
-    }
-  </style>
+  <title>MATRIX - الواجهة الرئيسية</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
 </head>
 <body>
   <canvas class="matrix-canvas" id="matrix"></canvas>
 
   <main class="page" aria-label="الواجهة الرئيسية">
-    <header class="header">
+    <!-- هيدر: يمين الشعار، وسط اسم المستخدم، يسار XP -->
+    <header class="header grid-3">
       <div class="header-right">
-        <div class="logo" aria-label="الشعار">الشعار هنا</div>
+        <div class="logo">MATRIX</div>
       </div>
       <div class="header-center">
         <div class="user-info" id="userInfo">مستخدم</div>
@@ -121,108 +23,57 @@
       </div>
     </header>
 
-    <section class="center">
+    <!-- محتوى: ترمينال + إدخال أوامر -->
+    <section class="center column">
       <div class="terminal" id="terminal"></div>
       <div class="input-area">
         <input type="text" id="command" class="cmd-input" placeholder="أدخل الأمر هنا…" />
         <button class="btn" id="sendBtn">إدخال</button>
+        <button class="btn ghost" id="logoutBtn">تسجيل خروج</button>
       </div>
     </section>
 
     <footer class="footer">
       <div class="message-card">
-        <div class="matrix-arabic" id="userMessage">‎يمكن عرض تعليمات أو رسالة للمستخدم هنا بأسلوب ماتركسي عربي‎</div>
+        <div class="matrix-arabic" id="gameHint">
+          ‎اكتب help لعرض الأوامر. نفّذ hack لبدء المحاكاة. أنهِ مهمتك الأولى عبر سلسلة أوامر صحيحة.‎
+        </div>
       </div>
     </footer>
   </main>
 
+  <script src="assets/js/matrix.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/missions.js"></script>
+  <script src="assets/js/terminal.js"></script>
   <script>
-    /* خلفية الماتركس */
-    (function(){
-      const canvas=document.getElementById('matrix');
-      const ctx=canvas.getContext('2d');
-      function resize(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;}
-      resize();window.addEventListener('resize',resize);
-      const glyphs="آأبتثجحخدذرزسشصضطظعغفقكلمنهوىي؟؛،ـ﴾﴿⟂";
-      const fontSize=Math.max(14,Math.floor(window.innerWidth/80));
-      let columns, drops;
-      function init(){
-        columns=Math.ceil(canvas.width/fontSize);
-        drops=Array.from({length:columns},()=>Math.floor(Math.random()*canvas.height));
+    // تحميل المستخدم أو العودة
+    const user = window.Auth.loadUser();
+    if(!user){ location.href = "index.html"; }
+    document.getElementById("userInfo").textContent = user.username;
+    document.getElementById("xpLevel").textContent = "XP: " + (user.xp || 0);
+
+    // تهيئة التيرمنال
+    const term = window.Terminal.create({
+      terminalEl: document.getElementById("terminal"),
+      inputEl: document.getElementById("command"),
+      sendBtn: document.getElementById("sendBtn"),
+      onXpGain: (delta)=>{
+        const u = window.Auth.loadUser();
+        u.xp = (u.xp || 0) + delta;
+        window.Auth.saveUser(u);
+        document.getElementById("xpLevel").textContent = "XP: " + u.xp;
       }
-      init(); window.addEventListener('resize',init);
-      function draw(){
-        ctx.fillStyle="rgba(0, 0, 0, 0.08)";
-        ctx.fillRect(0,0,canvas.width,canvas.height);
-        ctx.fillStyle="#00ff7b";
-        ctx.shadowColor="#00ff7b"; ctx.shadowBlur=8;
-        ctx.font=`${fontSize}px "Amiri","Cairo",monospace`;
-        for(let i=0;i<drops.length;i++){
-          const text=glyphs.charAt(Math.floor(Math.random()*glyphs.length));
-          const x=i*fontSize, y=drops[i]*fontSize;
-          ctx.fillText(text,x,y);
-          if(y>canvas.height && Math.random()>0.975){drops[i]=0;} else {drops[i]++;}
-        }
-        requestAnimationFrame(draw);
-      }
-      draw();
-    })();
-
-    /* تحميل بيانات المستخدم والرجوع إن لم توجد */
-    const saved=JSON.parse(localStorage.getItem("demo_auth_v1")||"null");
-    if(saved && saved.username){
-      document.getElementById("userInfo").textContent=saved.username;
-      document.getElementById("xpLevel").textContent="XP: "+(saved.xp||0);
-    } else {
-      window.location.href="index.html";
-    }
-
-    /* محاكاة أوامر التيرمنال */
-    const terminal=document.getElementById("terminal");
-    const input=document.getElementById("command");
-    const sendBtn=document.getElementById("sendBtn");
-
-    const commands={
-      help: "الأوامر المتاحة:\n help — قائمة الأوامر\n about — وصف النظام\n hack — محاكاة اختراق\n clear — مسح الشاشة",
-      about:"نظام محاكاة هاك عربي — نسخة تجريبية مستوحاة من Hack Run.",
-      hack:"جارٍ التنفيذ...\nتم الوصول إلى النظام بنجاح ✔\nسِجل: AUTH_OK / CHANNEL_OPEN",
-      clear:"__CLEAR__"
-    };
-
-    function print(text){
-      terminal.textContent+=text+"\n";
-      terminal.scrollTop=terminal.scrollHeight;
-    }
-
-    function runCommand(cmd){
-      const raw=cmd;
-      const c=cmd.trim().toLowerCase();
-      print("> "+raw);
-      if(commands[c]){
-        if(commands[c]==="__CLEAR__"){terminal.textContent="";return;}
-        setTimeout(()=>print(commands[c]),250);
-        // مثال: زيادة XP على أمر hack
-        if(c==="hack"){
-          const saved=JSON.parse(localStorage.getItem("demo_auth_v1")||"{}");
-          saved.xp=(saved.xp||0)+10;
-          localStorage.setItem("demo_auth_v1", JSON.stringify(saved));
-          document.getElementById("xpLevel").textContent="XP: "+saved.xp;
-        }
-      } else {
-        setTimeout(()=>print("خطأ: الأمر غير معروف"),250);
-      }
-    }
-
-    sendBtn.addEventListener("click", ()=>{
-      if(input.value.trim()!==""){runCommand(input.value);input.value="";}
     });
-    input.addEventListener("keydown",(e)=>{ if(e.key==="Enter"){ sendBtn.click(); } });
 
-    /* دالة لتعديل الرسالة السفلية لاحقاً */
-    function setUserMessage(text){
-      const msg=document.getElementById('userMessage');
-      if(msg){ msg.textContent=text; }
-    }
+    // تسجيل خروج
+    document.getElementById("logoutBtn").addEventListener("click", ()=>{
+      window.Auth.clear();
+      location.href = "index.html";
+    });
+
+    // رسالة بداية
+    term.print("مرحباً " + user.username + " — نظام MATRIX جاهز.\nاكتب help لعرض الأوامر.");
   </script>
 </body>
 </html>
