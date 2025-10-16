@@ -1,0 +1,121 @@
+:root {
+  --green: #00ff7b;
+  --dark: #000;
+  --dim: #0a3;
+  --text: #d8ffd8;
+}
+
+body {
+  margin: 0;
+  background: var(--dark);
+  color: var(--green);
+  font-family: "Cairo", monospace;
+  overflow: hidden;
+}
+
+#matrix-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+}
+
+.page {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.logo {
+  font-size: 48px;
+  font-weight: bold;
+  color: var(--dark);
+  text-shadow: 0 0 6px var(--green), 0 0 12px var(--green), 0 0 24px var(--green);
+  margin-bottom: 20px;
+  user-select: none;
+}
+
+.card {
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid var(--dim);
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0, 255, 123, 0.3);
+  padding: 20px;
+  width: min(90vw, 500px);
+  display: grid;
+  gap: 16px;
+}
+
+.intro {
+  font-size: 18px;
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.en {
+  display: block;
+  font-size: 14px;
+  color: #9fffbf;
+  margin-top: 4px;
+}
+
+.input {
+  width: 100%;
+  padding: 12px;
+  background: #000;
+  border: 1px solid var(--dim);
+  border-radius: 8px;
+  color: var(--green);
+  font-family: inherit;
+  font-size: 16px;
+}
+
+.btn {
+  padding: 10px 16px;
+  background: var(--green);
+  color: var(--dark);
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 0 12px rgba(0, 255, 123, 0.35);
+}
+
+.btn:hover {
+  background: #0f0;
+}
+
+.btn.ghost {
+  background: transparent;
+  color: var(--green);
+  border: 1px solid var(--green);
+}
+
+.rules p {
+  margin: 8px 0;
+  font-size: 16px;
+}
+
+.ready {
+  margin-top: 12px;
+  font-weight: bold;
+}
+
+.choices {
+  display: flex;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.message {
+  margin-top: 12px;
+  font-weight: bold;
+  color: #ff4f4f;
+  text-align: center;
+}
+
+.hidden {
+  display: none;
+}
