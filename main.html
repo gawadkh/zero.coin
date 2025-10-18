@@ -1,79 +1,27 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>MATRIX - الواجهة الرئيسية</title>
-  <link rel="stylesheet" href="assets/css/style.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MATRIX - المحرك الرئيسي</title>
+  <link rel="stylesheet" href="assets/css/main.css" />
 </head>
 <body>
-  <canvas class="matrix-canvas" id="matrix"></canvas>
+  <canvas id="matrix-canvas"></canvas>
 
-  <main class="page" aria-label="الواجهة الرئيسية">
-    <!-- هيدر: يمين الشعار، وسط اسم المستخدم، يسار XP -->
-    <header class="header grid-3">
-      <div class="header-right">
-        <div class="logo">MATRIX</div>
-      </div>
-      <div class="header-center">
-        <div class="user-info" id="userInfo">مستخدم</div>
-      </div>
-      <div class="header-left">
-        <div class="xp" id="xpLevel">XP: 0</div>
-      </div>
-    </header>
+  <main class="page">
+    <header class="title">commands</header>
 
-    <!-- محتوى: ترمينال + إدخال أوامر -->
-    <section class="center column">
+    <section class="terminal-box">
       <div class="terminal" id="terminal"></div>
-      <div class="input-area">
-        <input type="text" id="command" class="cmd-input" placeholder="أدخل الأمر هنا…" />
-        <button class="btn" id="sendBtn">إدخال</button>
-        <button class="btn ghost" id="logoutBtn">تسجيل خروج</button>
-      </div>
+      <input type="text" id="commandInput" class="cmd-input" placeholder="اكتب الأمر هنا..." />
     </section>
 
     <footer class="footer">
-      <div class="message-card">
-        <div class="matrix-arabic" id="gameHint">
-          ‎اكتب help لعرض الأوامر. نفّذ hack لبدء المحاكاة. أنهِ مهمتك الأولى عبر سلسلة أوامر صحيحة.‎
-        </div>
-      </div>
+      <p class="footer-text">استيقظ، أنت تعيش داخل مصفوفة الماتريكس بالفعل</p>
     </footer>
   </main>
 
-  <script src="assets/js/matrix.js"></script>
-  <script src="assets/js/auth.js"></script>
-  <script src="assets/js/missions.js"></script>
-  <script src="assets/js/terminal.js"></script>
-  <script>
-    // تحميل المستخدم أو العودة
-    const user = window.Auth.loadUser();
-    if(!user){ location.href = "index.html"; }
-    document.getElementById("userInfo").textContent = user.username;
-    document.getElementById("xpLevel").textContent = "XP: " + (user.xp || 0);
-
-    // تهيئة التيرمنال
-    const term = window.Terminal.create({
-      terminalEl: document.getElementById("terminal"),
-      inputEl: document.getElementById("command"),
-      sendBtn: document.getElementById("sendBtn"),
-      onXpGain: (delta)=>{
-        const u = window.Auth.loadUser();
-        u.xp = (u.xp || 0) + delta;
-        window.Auth.saveUser(u);
-        document.getElementById("xpLevel").textContent = "XP: " + u.xp;
-      }
-    });
-
-    // تسجيل خروج
-    document.getElementById("logoutBtn").addEventListener("click", ()=>{
-      window.Auth.clear();
-      location.href = "index.html";
-    });
-
-    // رسالة بداية
-    term.print("مرحباً " + user.username + " — نظام MATRIX جاهز.\nاكتب help لعرض الأوامر.");
-  </script>
+  <script src="assets/js/main.js"></script>
 </body>
 </html>
