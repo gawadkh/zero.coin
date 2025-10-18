@@ -59,6 +59,15 @@ if (c === "رجوع") {
     print("لا يمكن الرجوع أكثر.");
     return;
   }
+  if (c === "إعادة") {
+  stateHistory = [];
+  saveState("start");
+  terminal.textContent = "";
+  print("تمت إعادة المحاكاة من البداية...");
+  setTimeout(() => handleCommand(""), 600);
+  return;
+}
+
   switch (state) {
     case "start":
       print("hello world / مرحبا يا صاح");
@@ -126,7 +135,7 @@ let stateHistory = [];
       break;
 
     default:
-      print("تم إنهاء هذه المرحلة. أعد تحميل الصفحة للبدء من جديد.");
+      print("تم إنهاء هذه المرحلة. يمكنك كتابة 'إعادة' للبدء من جديد.");
       break;
   }
 }
