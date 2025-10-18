@@ -40,6 +40,7 @@ function print(text) {
 }
 
 function saveState(newState) {
+  if (state) stateHistory.push(state);
   state = newState;
   localStorage.setItem("matrix_state", state);
 }
@@ -47,7 +48,17 @@ function saveState(newState) {
 function handleCommand(cmd) {
   const c = cmd.trim();
   print("> " + c);
-
+if (c === "رجوع") {
+  if (stateHistory.length > 0) {
+    const previous = stateHistory.pop();
+    state = previous;
+    localStorage.setItem("matrix_state", state);
+    print("تم الرجوع إلى المرحلة السابقة.");
+    return;
+  } else {
+    print("لا يمكن الرجوع أكثر.");
+    return;
+  }
   switch (state) {
     case "start":
       print("hello world / مرحبا يا صاح");
@@ -55,6 +66,7 @@ function handleCommand(cmd) {
       setTimeout(() => print("Enter your serial number../ادخل رقمك التسلسلي.."), 1200);
       saveState("await_serial");
       break;
+let stateHistory = [];
 
     case "await_serial":
       if (/^\d{6}$/.test(c)) {
