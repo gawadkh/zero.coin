@@ -1,0 +1,115 @@
+:root {
+  --green: #00ff7b;
+  --dark: #000;
+  --dim: #0a3;
+}
+
+body {
+  margin: 0;
+  background: var(--dark);
+  color: var(--green);
+  font-family: "Cairo", monospace;
+  overflow: hidden;
+}
+
+#cars-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+}
+
+.page {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  gap: 20px;
+}
+
+.header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.top-left, .top-right {
+  width: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.top-center {
+  flex: 1;
+  text-align: center;
+}
+
+.title {
+  font-size: 36px;
+  font-weight: bold;
+  color: var(--dark);
+  text-shadow: 0 0 6px var(--green), 0 0 12px var(--green), 0 0 24px var(--green);
+  user-select: none;
+}
+
+.stats {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 14px;
+  color: #9fffbf;
+}
+
+.stats div {
+  margin: 2px 0;
+}
+
+.avatar-box {
+  width: 64px;
+  height: 64px;
+  border: 2px solid var(--green);
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0 0 12px rgba(0, 255, 123, 0.4);
+}
+
+.avatar-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.terminal-box {
+  width: min(90vw, 800px);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.terminal {
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid var(--dim);
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 255, 123, 0.3);
+  padding: 16px;
+  height: 50vh;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  font-family: monospace;
+  font-size: 15px;
+  color: var(--green);
+}
+
+.cmd-input {
+  padding: 12px;
+  background: #000;
+  border: 1px solid var(--dim);
+  border-radius: 8px;
+  color: var(--green);
+  font-size: 16px;
+  font-family: monospace;
+}
