@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MATRIX - CARS</title>
+  <link rel="stylesheet" href="assets/css/cars.css" />
+</head>
+<body>
+  <canvas id="cars-canvas"></canvas>
+
+  <main class="page">
+    <header class="header">
+      <div class="top-left">
+        <div class="stats">
+          <div class="label">الصفقات الناجحة</div>
+          <div id="deals">0</div>
+          <div class="label">الأرباح $</div>
+          <div id="profit">0</div>
+        </div>
+      </div>
+
+      <div class="top-center">
+        <div class="title">CARS</div>
+      </div>
+
+      <div class="top-right">
+        <div class="avatar-box">
+          <img id="avatar" src="assets/images/avatars/face1.png" alt="عميل" />
+        </div>
+      </div>
+    </header>
+
+    <section class="terminal-box">
+      <div class="terminal" id="terminal"></div>
+      <input type="text" id="commandInput" class="cmd-input" placeholder="اكتب الأمر هنا..." />
+    </section>
+  </main>
+
+  <script src="assets/js/cars.js"></script>
+</body>
+</html>
