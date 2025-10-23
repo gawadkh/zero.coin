@@ -27,12 +27,13 @@ function drawMatrix() {
 }
 drawMatrix();
 
-// محرك الأوامر
+// المحرك التفاعلي
 const terminal = document.getElementById("terminal");
 const input = document.getElementById("commandInput");
 
 let state = localStorage.getItem("matrix_state") || "start";
-let serial = "";
+let serial = localStorage.getItem("matrix_serial") || "";
+let stateHistory = JSON.parse(localStorage.getItem("matrix_history") || "[]");
 
 function print(text) {
   terminal.textContent += text + "\n";
@@ -40,46 +41,62 @@ function print(text) {
 }
 
 function saveState(newState) {
-  if (state) stateHistory.push(state);
+  if (state && state !== newState) {
+    stateHistory.push(state);
+    localStorage.setItem("matrix_history", JSON.stringify(stateHistory));
+  }
   state = newState;
   localStorage.setItem("matrix_state", state);
 }
 
-function handleCommand(cmd) {
-  const c = cmd.trim();
-  print("> " + c);
-if (c === "رجوع") {
-  if (stateHistory.length > 0) {
-    const previous = stateHistory.pop();
-    state = previous;
-    localStorage.setItem("matrix_state", state);
-    print("تم الرجوع إلى المرحلة السابقة.");
-    return;
-  } else {
-    print("لا يمكن الرجوع أكثر.");
-    return;
-  }
-  if (c === "إعادة") {
+function resetAll() {
+  state = "start";
+  serial = "";
   stateHistory = [];
-  saveState("start");
+  localStorage.removeItem("matrix_state");
+  localStorage.removeItem("matrix_serial");
+  localStorage.removeItem("matrix_history");
   terminal.textContent = "";
   print("تمت إعادة المحاكاة من البداية...");
   setTimeout(() => handleCommand(""), 600);
-  return;
 }
 
-  switch (state) {
-    case "start":
-      print("hello world / مرحبا يا صاح");
-      setTimeout(() => print("?wake up ! .. who are you / استيقظ !.. من انت ؟"), 600);
-      setTimeout(() => print("Enter your serial number../ادخل رقمك التسلسلي.."), 1200);
-      saveState("await_serial");
-      break;
-let stateHistory = [];
+function goBack() {
+  while (stateHistory.length > 0) {
+    const prev = stateHistory.pop();
+    if (!["end", "cars", "guns", "tecno", "cia", "hak"].includes(prev)) {
+      state = prev;
+      localStorage.setItem("matrix_state", state);
+      localStorage.setItem("matrix_history", JSON.stringify(stateHistory));
+      print("تم الرجوع إلى المرحلة السابقة.");
+      return;
+    }
+  }
+  print("لا يمكن الرجوع أكثر.");
+}
 
+function handleCommand(cmd) {
+  const c = cmd.trim();
+  if (!c && state === "start") {
+    print("hello world / مرحبا يا صاح");
+    setTimeout(() => print("?wake up ! .. who are you / استيقظ !.. من انت ؟"), 600);
+    setTimeout(() => print("Enter your serial number../ادخل رقمك التسلسلي.."), 1200);
+    saveState("await_serial");
+    return;
+  }
+
+  print("> " + c);
+
+  // أوامر عالمية
+  if (c === "إعادة") return resetAll();
+  if (c === "رجوع") return goBack();
+  if (c === "حالة") return print("الحالة الحالية: " + state);
+
+  switch (state) {
     case "await_serial":
       if (/^\d{6}$/.test(c)) {
         serial = c;
+        localStorage.setItem("matrix_serial", serial);
         print("Welcome to the matrix. What is your goal? - (Work) (Play)\nاهلا بك في المصفوفة ما هو هدفك ؟ - (العمل) (اللعب)");
         saveState("choose_goal");
       } else {
@@ -91,6 +108,7 @@ let stateHistory = [];
       if (c === "اللعب") {
         print("ليس لدينا وقت للعب مع الأطفال أمثالك…");
         saveState("end");
+        print("يمكنك كتابة 'إعادة' للبدء من جديد.");
       } else if (c === "العمل") {
         print("ما هو المجال الذي تريد العمل به؟ (التجارة) (جمع المعلومات) (البرمجة)");
         saveState("choose_field");
@@ -134,8 +152,12 @@ let stateHistory = [];
       }
       break;
 
+    case "end":
+      print("تم إنهاء هذه المرحلة. يمكنك كتابة 'إعادة' للبدء من جديد أو 'رجوع' للعودة خطوة.");
+      break;
+
     default:
-      print("تم إنهاء هذه المرحلة. يمكنك كتابة 'إعادة' للبدء من جديد.");
+      print("لا يمكن تفسير هذا الأمر في هذه المرحلة.");
       break;
   }
 }
@@ -150,7 +172,7 @@ input.addEventListener("keydown", (e) => {
   }
 });
 
-// بدء تلقائي
+// بدء تلقائي إن كانت الحالة "start"
 if (state === "start") {
   handleCommand("");
 }
